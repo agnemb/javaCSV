@@ -1,0 +1,232 @@
+package praktika;
+import java.io.File;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
+
+public class internship {
+	
+	public static void main (String[] args) {
+		
+		System.out.println("Pasirinkite norima veiksma: 1. Suzinoti trukstama prekiu kieki. 2. Suzinoti ar galiojimo data pasibaigus.\nIveskite pasirinkima:");
+		
+		Scanner irasymas=new Scanner(System.in);
+		String pasirinkimas=irasymas.nextLine();
+		int pasInteger = Integer.parseInt(pasirinkimas);
+		
+		if(pasInteger==1) {
+			
+		
+			System.out.println("Iveskite skaiciu:");
+			
+			while(irasymas.hasNextLine()) {
+				
+
+				String Mazesnis=irasymas.nextLine();
+				double mazDouble = Double.parseDouble(Mazesnis);
+				
+				String fileName="sample.csv";
+				File file=new File(fileName);
+				
+				try {
+					Scanner inputStream=new Scanner(file);
+					inputStream.next();
+					inputStream.next();
+					inputStream.next();
+
+					
+					String[][]rikiavimas = new String[20][4];
+					int eilutes = 0;
+					
+					while(inputStream.hasNext()) {
+						
+						String data=inputStream.next();
+					
+						String[]values=data.split(",");
+						
+						int rasta = 0;
+						
+						for(int i = 0; i<eilutes; i++) {
+
+							if(rikiavimas[i][0].equals(values[0])&&rikiavimas[i][1].equals(values[1])&&rikiavimas[i][3].equals(values[3])) {
+								int turimasKiekis = Integer.parseInt(rikiavimas[i][2]);
+								int rastasKiekis = Integer.parseInt(values[2]);
+								
+								rikiavimas[i][2] = Integer.toString(turimasKiekis+rastasKiekis);
+								
+								
+								
+								rasta = 1;
+							}
+						}
+						
+						if (rasta==0) {
+						
+							rikiavimas[eilutes][0]=values[0];
+							rikiavimas[eilutes][1]=values[1];
+							rikiavimas[eilutes][2]=values[2];
+							rikiavimas[eilutes][3]=values[3];
+							
+							eilutes++;
+						
+						}
+						
+										
+					}
+					
+					for(int i = 0; i<eilutes-1; i++) {
+				        for (int j = i+1; j<eilutes; j++) {
+				            if(rikiavimas[i][0].compareTo(rikiavimas[j][0])>0) {
+				               String temp[] = rikiavimas[i];
+				               rikiavimas[i] = rikiavimas[j];
+				               rikiavimas[j] = temp;
+				            }
+				        }
+				    }
+					
+					for(int i=0; i<eilutes; i++) {
+						double Kiekis=Double.parseDouble(rikiavimas[i][2]);
+						
+						if(Kiekis<mazDouble) {
+							System.out.println(rikiavimas[i][0]+" "+rikiavimas[i][1]+" "+rikiavimas[i][2]+" "+rikiavimas[i][3]);
+						}
+					}
+				
+					inputStream.close();
+					
+				}
+				
+				
+				catch (FileNotFoundException e){
+					
+					e.printStackTrace();
+					
+					
+				}
+				
+				System.out.println("Iveskite kita skaiciu:");
+				
+			}
+		
+		}else if(pasInteger==2) {
+			
+			System.out.println("Iveskite data:");
+			
+			while(irasymas.hasNextLine()) {
+				
+				
+				String irasytaData=irasymas.nextLine();
+				
+				String[]dalys=irasytaData.split("/");
+				
+				if(dalys.length==3) {
+				
+					double irasytaDiena=Double.parseDouble(dalys[1]);
+					double irasytaMenuo=Double.parseDouble(dalys[0]);
+					double irasytaMetai=Double.parseDouble(dalys[2]);				
+				
+				
+					String fileName="sample.csv";
+					File file=new File(fileName);
+					
+					try {
+						Scanner inputStream=new Scanner(file);
+						inputStream.next();
+						inputStream.next();
+						inputStream.next();
+						
+						String[][]rikiavimas = new String[20][4];
+						int eilutes = 0;
+	
+						while(inputStream.hasNext()) {
+							
+							String data=inputStream.next();
+							
+							String[]values=data.split(",");
+							
+							int rasta = 0;
+							
+							for(int i = 0; i<eilutes; i++) {
+
+								if(rikiavimas[i][0].equals(values[0])&&rikiavimas[i][1].equals(values[1])&&rikiavimas[i][3].equals(values[3])) {
+									int turimasKiekis = Integer.parseInt(rikiavimas[i][2]);
+									int rastasKiekis = Integer.parseInt(values[2]);
+									
+									rikiavimas[i][2] = Integer.toString(turimasKiekis+rastasKiekis);
+									
+									
+									
+									rasta = 1;
+								}
+							}
+							
+							if (rasta==0) {
+							
+								rikiavimas[eilutes][0]=values[0];
+								rikiavimas[eilutes][1]=values[1];
+								rikiavimas[eilutes][2]=values[2];
+								rikiavimas[eilutes][3]=values[3];
+								
+								eilutes++;
+							
+							}
+						}
+						
+						for(int i = 0; i<eilutes-1; i++) {
+					        for (int j = i+1; j<eilutes; j++) {
+					            if(rikiavimas[i][0].compareTo(rikiavimas[j][0])>0) {
+					               String temp[] = rikiavimas[i];
+					               rikiavimas[i] = rikiavimas[j];
+					               rikiavimas[j] = temp;
+					            }
+					        }
+					    }
+						
+						for(int i=0; i<eilutes; i++) {
+							String[]Data=rikiavimas[i][3].split("/");
+							
+							double diena=Double.parseDouble(Data[1]);
+							double menuo=Double.parseDouble(Data[0]);
+							double metai=Double.parseDouble(Data[2]);
+							
+							if(metai==irasytaMetai) {
+								if(menuo==irasytaMenuo) {
+									if(diena<irasytaDiena) {
+										System.out.println(rikiavimas[i][0]+" "+rikiavimas[i][1]+" "+rikiavimas[i][2]+" "+rikiavimas[i][3]);
+									}
+								}else if(menuo<irasytaMenuo){
+									System.out.println(rikiavimas[i][0]+" "+rikiavimas[i][1]+" "+rikiavimas[i][2]+" "+rikiavimas[i][3]);
+								}
+							}else if(metai<irasytaMetai) {
+								System.out.println(rikiavimas[i][0]+" "+rikiavimas[i][1]+" "+rikiavimas[i][2]+" "+rikiavimas[i][3]);
+							}
+						}
+					
+						inputStream.close();
+		
+						
+					}
+					
+					
+					catch (FileNotFoundException e){
+						
+						e.printStackTrace();
+						
+						
+					}
+					
+				}else {
+					System.out.println("Neteisinga data.");
+				}
+			
+				System.out.println("Iveskite kita data:");
+			}
+			
+		}else{
+			System.out.println("Toks pasirinkimas neegzistuoja");
+		}
+	
+		irasymas.close();
+	
+	}
+}
+
