@@ -1,1 +1,1 @@
-# javaCSV
+A java program that reads from a csv file. You can choose a number of products and write the number in to the console to find all the products that have an amount smaller than the amount that you indicated at first. Secondly, the program is also designed to find all the products whose expiration date is due, depending on the date you input. The list is also shown in an alphabetical order and if the code, name and date of the products match, then the program will combine them into one and count the sum of the amount of the products.
